@@ -1,12 +1,13 @@
 def parse():
     output: list[tuple[int, int]] = []
-    file = open("./2/input.txt", "r")
+    file = open("./02/input.txt", "r")
     input = file.read()
-    ranges = input.split(',')
+    ranges = input.split(",")
     for r in ranges:
-        start, end = r.split('-')
+        start, end = r.split("-")
         output.append((int(start), int(end)))
     return output
+
 
 def process(id_range: tuple[int, int]) -> list[int]:
     wrong_ids = []
@@ -25,6 +26,7 @@ def process(id_range: tuple[int, int]) -> list[int]:
                 break
 
     return wrong_ids
+
 
 total = 0
 id_ranges = parse()

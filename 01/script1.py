@@ -1,17 +1,19 @@
 def parse():
     output = []
-    file = open("./1/input.txt", "r")
+    file = open("./01/input.txt", "r")
     for line in file.readlines():
         direction = line[0]
         value = int(line[1:].strip())
-        if direction == 'R':
+        if direction == "R":
             output.append(value)
         else:
             output.append(-value)
     return output
 
+
 def process(current_value: int, change: int) -> int:
     return (current_value + change) % 100
+
 
 counter = 0
 current_value = 50
