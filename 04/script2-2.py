@@ -34,7 +34,7 @@ def get_adjacent_papers(grid: list[list[int]], row: int, col: int) -> int:
     return adjacent
 
 
-def process(grid: list[list[int]]) -> int:
+def get_removed(grid: list[list[int]]) -> tuple[int, list[list[int]]]:
     count = 0
 
     for row in range(len(grid)):
@@ -46,6 +46,18 @@ def process(grid: list[list[int]]) -> int:
             adjacent = get_adjacent_papers(grid, row, col)
             if adjacent < 4:
                 count += 1
+                grid[row][col] = "."
+
+    return count, grid
+
+
+def process(grid: list[list[int]]) -> int:
+    count = 0
+    while True:
+        removed, grid = get_removed(grid)
+        if removed == 0:
+            break
+        count += removed
 
     return count
 

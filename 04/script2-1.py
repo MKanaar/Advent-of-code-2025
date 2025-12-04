@@ -34,8 +34,8 @@ def get_adjacent_papers(grid: list[list[int]], row: int, col: int) -> int:
     return adjacent
 
 
-def process(grid: list[list[int]]) -> int:
-    count = 0
+def get_removable_cells(grid: list[list[int]]) -> list[tuple[int, int]]:
+    to_remove: list[tuple[int, int]] = []
 
     for row in range(len(grid)):
         for col in range(len(grid[row])):
@@ -45,7 +45,17 @@ def process(grid: list[list[int]]) -> int:
 
             adjacent = get_adjacent_papers(grid, row, col)
             if adjacent < 4:
-                count += 1
+                to_remove.append((row, col))
+
+    return to_remove
+
+
+def process(grid: list[list[int]]) -> int:
+    count = 0
+    while removable := get_removable_cells(grid):
+        for row, col in removable:
+            grid[row][col] = "."
+        count += len(removable)
 
     return count
 
