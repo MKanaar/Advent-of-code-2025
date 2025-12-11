@@ -51,7 +51,7 @@ def process(adjacency_list: dict[str, list[str]], topological_order: list[str]) 
     dp_table["svr"][0] = 1
 
     for device in topological_order:
-        if device not in dp_table or device == "out":
+        if device == "out":
             continue
 
         for state in range(4):
@@ -65,9 +65,7 @@ def process(adjacency_list: dict[str, list[str]], topological_order: list[str]) 
                     new_state |= 1
                 elif output_device == "fft":
                     new_state |= 2
-                dp_table.setdefault(output_device, [0, 0, 0, 0])[new_state] += (
-                    number_of_paths
-                )
+                dp_table[output_device][new_state] += number_of_paths
 
     return dp_table["out"][3]
 
