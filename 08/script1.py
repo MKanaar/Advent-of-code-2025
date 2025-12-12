@@ -1,22 +1,26 @@
 import math
 
 
-def parse():
-    output: list[tuple[int, int, int]] = []
-    file = open("./08/input.txt", "r")
-    for line in file.readlines():
-        x, y, z = line.split(",")
-        output.append((int(x), int(y), int(z)))
+def parse() -> list[tuple[int, int, int]]:
+    box_positions: list[tuple[int, int, int]] = []
 
-    return output
+    with open("./08/input.txt", "r") as file:
+        for line in file:
+            x, y, z = line.split(",")
+            box_positions.append((int(x), int(y), int(z)))
+
+    return box_positions
 
 
-def get_distance(a: tuple[int, int, int], b: tuple[int, int, int]) -> int:
+def get_distance(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
     return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2)
 
 
-def get_all_distances(boxes: list[tuple[int, int, int]]) -> list[int]:
-    distances: list[tuple[int, int, int]] = []
+def get_all_distances(
+    boxes: list[tuple[int, int, int]],
+) -> list[tuple[float, int, int]]:
+    distances: list[tuple[float, int, int]] = []
+
     for i in range(len(boxes) - 1):
         for j in range(i + 1, len(boxes)):
             distances.append((get_distance(boxes[i], boxes[j]), i, j))
@@ -39,15 +43,17 @@ def process(boxes: list[tuple[int, int, int]]) -> int:
         index_circuit_b = next(
             (i for i, circuit in enumerate(circuits) if b in circuit), None
         )
-        if index_circuit_a is None and index_circuit_b is None:
-            circuits.append([a, b])
-        elif index_circuit_a is not None and index_circuit_b is None:
-            circuits[index_circuit_a].append(b)
-        elif index_circuit_a is None and index_circuit_b is not None:
-            circuits[index_circuit_b].append(a)
-        elif index_circuit_a is not index_circuit_b:
-            circuits[index_circuit_a] += circuits[index_circuit_b]
-            del circuits[index_circuit_b]
+        if index_circuit_a is None:
+            if index_circuit_b is None:
+                circuits.append([a, b])
+            else:
+                circuits[index_circuit_b].append(a)
+        else:
+            if index_circuit_b is None:
+                circuits[index_circuit_a].append(b)
+            elif index_circuit_a is not index_circuit_b:
+                circuits[index_circuit_a] += circuits[index_circuit_b]
+                del circuits[index_circuit_b]
 
     circuits.sort(key=lambda x: len(x), reverse=True)
 

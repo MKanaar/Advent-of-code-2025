@@ -1,15 +1,16 @@
-def parse():
-    output: list[str] = []
-    file = open("./07/input.txt", "r")
-    for line in file.readlines():
-        output.append(line.strip())
+def parse() -> tuple[list[str], int]:
+    grid: list[str] = []
 
-    start = output[0].find("S")
+    with open("./07/input.txt", "r") as file:
+        for line in file:
+            grid.append(line.strip())
 
-    return output, start
+    start = grid[0].find("S")
+
+    return grid, start
 
 
-def process(grid: list[str], start: int):
+def process(grid: list[str], start: int) -> int:
     paths: list[int] = [0] * len(grid[0])
     paths[start] = 1
 

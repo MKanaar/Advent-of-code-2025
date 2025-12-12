@@ -1,23 +1,24 @@
-def parse():
+def parse() -> tuple[list[list[int]], list[str]]:
     grid: list[str] = []
-    operators: str = []
-    file = open("./06/input.txt", "r")
-    for line in file.readlines():
-        elements = line.strip("\n")
-        grid.append(elements)
-        if elements[0] in ["+", "*"]:
-            operators = elements.split()
+    operators: list[str] = []
+
+    with open("./06/input.txt", "r") as file:
+        for line in file:
+            elements = line.strip("\n")
+            grid.append(elements)
+            if elements[0] in ["+", "*"]:
+                operators = elements.split()
 
     operands: list[list[int]] = []
     numbers: list[int] = []
     number: str = ""
+
     for col in range(len(grid[0])):
         rows = len(grid)
         for row in range(rows - 1, -1, -1):
             char = grid[row][col]
             if char.isdigit():
                 number += char
-
             if row == 0 and number != "":
                 numbers.append(int(number[::-1]))
                 number = ""
@@ -34,6 +35,7 @@ def parse():
 
 def process(operands: list[list[int]], operators: list[str]) -> int:
     total = 0
+
     for i in range(len(operators)):
         operator = operators[i]
         if operator[0] == "+":
@@ -47,7 +49,6 @@ def process(operands: list[list[int]], operators: list[str]) -> int:
     return total
 
 
-count = 0
 operands, operators = parse()
 count = process(operands, operators)
 print(count)

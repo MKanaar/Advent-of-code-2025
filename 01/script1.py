@@ -1,24 +1,26 @@
-def parse():
-    output = []
-    file = open("./01/input.txt", "r")
-    for line in file.readlines():
-        direction = line[0]
-        value = int(line[1:].strip())
-        if direction == "R":
-            output.append(value)
-        else:
-            output.append(-value)
-    return output
+def parse() -> list[int]:
+    rotations: list[int] = []
+
+    with open("./01/input.txt", "r") as file:
+        for line in file:
+            direction = line[0]
+            value = int(line[1:].strip())
+            if direction == "R":
+                rotations.append(value)
+            else:
+                rotations.append(-value)
+
+    return rotations
 
 
-def process(current_value: int, change: int) -> int:
-    return (current_value + change) % 100
+def process(current_value: int, rotation: int) -> int:
+    return (current_value + rotation) % 100
 
 
 counter = 0
 current_value = 50
-for change in parse():
-    current_value = process(current_value, change)
+for rotation in parse():
+    current_value = process(current_value, rotation)
     if current_value == 0:
         counter += 1
 

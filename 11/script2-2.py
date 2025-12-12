@@ -2,8 +2,8 @@ from collections import defaultdict, deque
 
 
 def topological_sort(adjacency_list: dict[str, list[str]]) -> list[str]:
-    incoming_connections = defaultdict(int)
-    devices = set(adjacency_list.keys())
+    incoming_connections: dict[str, int] = defaultdict(int)
+    devices: set[str] = set(adjacency_list.keys())
 
     for device, output_devices in adjacency_list.items():
         for output_device in output_devices:
@@ -29,19 +29,17 @@ def topological_sort(adjacency_list: dict[str, list[str]]) -> list[str]:
     return order
 
 
-def parse():
+def parse() -> tuple[dict[str, list[str]], list[str]]:
     adjacency_list: dict[str, list[str]] = {}
 
-    file = open("./11/input.txt", "r")
-    for line in file.readlines():
-        parts = line.strip().split(" ")
-        device = parts[0][:-1]
-        output_devices = parts[1:]
-        adjacency_list[device] = output_devices
+    with open("./11/input.txt", "r") as file:
+        for line in file:
+            parts = line.strip().split(" ")
+            device = parts[0][:-1]
+            output_devices = parts[1:]
+            adjacency_list[device] = output_devices
 
-    topological_order = topological_sort(adjacency_list)
-
-    return adjacency_list, topological_order
+    return adjacency_list, topological_sort(adjacency_list)
 
 
 def process(adjacency_list: dict[str, list[str]], topological_order: list[str]) -> int:
@@ -53,12 +51,10 @@ def process(adjacency_list: dict[str, list[str]], topological_order: list[str]) 
     for device in topological_order:
         if device == "out":
             continue
-
         for state in range(4):
             number_of_paths = dp_table[device][state]
             if number_of_paths == 0:
                 continue
-
             for output_device in adjacency_list.get(device, []):
                 new_state = state
                 if output_device == "dac":

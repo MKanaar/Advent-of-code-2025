@@ -1,23 +1,25 @@
-def parse():
+def parse() -> tuple[list[list[int]], list[str]]:
     columns: list[list[int]] = []
     operators: list[str] = []
-    file = open("./06/input.txt", "r")
-    for line in file.readlines():
-        elements = line.strip().split()
-        if elements[0] in ["+", "*"]:
-            operators = elements
-        else:
-            numbers = [int(x) for x in elements]
-            for i in range(len(numbers)):
-                if len(columns) <= i:
-                    columns.append([])
-                columns[i].append(numbers[i])
+
+    with open("./06/input.txt", "r") as file:
+        for line in file:
+            elements = line.strip().split()
+            if elements[0] in ["+", "*"]:
+                operators = elements
+            else:
+                numbers = [int(x) for x in elements]
+                for i in range(len(numbers)):
+                    if len(columns) <= i:
+                        columns.append([])
+                    columns[i].append(numbers[i])
 
     return columns, operators
 
 
 def process(columns: list[list[int]], operators: list[str]) -> int:
     total = 0
+
     for i in range(len(operators)):
         operator = operators[i]
         if operator[0] == "+":
@@ -31,7 +33,6 @@ def process(columns: list[list[int]], operators: list[str]) -> int:
     return total
 
 
-count = 0
 columns, operators = parse()
 count = process(columns, operators)
 print(count)

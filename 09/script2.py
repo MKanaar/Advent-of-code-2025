@@ -1,9 +1,10 @@
-def parse():
+def parse() -> list[tuple[int, int]]:
     red_tiles: list[tuple[int, int]] = []
-    file = open("./09/input.txt", "r")
-    for line in file.readlines():
-        coordinate = line.strip().split(",")
-        red_tiles.append((int(coordinate[0]), int(coordinate[1])))
+
+    with open("./09/input.txt", "r") as file:
+        for line in file:
+            coordinate = line.strip().split(",")
+            red_tiles.append((int(coordinate[0]), int(coordinate[1])))
 
     return red_tiles
 
@@ -64,6 +65,7 @@ def other_red_or_green_tiles_in_area(
 def get_area(tile1: tuple[int, int], tile2: tuple[int, int]) -> int:
     width = abs(tile1[0] - tile2[0]) + 1
     height = abs(tile1[1] - tile2[1]) + 1
+
     return width * height
 
 

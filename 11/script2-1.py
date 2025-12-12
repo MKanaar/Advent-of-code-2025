@@ -3,6 +3,7 @@ from collections import deque
 
 def get_min_depths(adjacency_list: dict[str, list[str]]) -> dict[str, int]:
     all_devices: set[str] = set(adjacency_list.keys())
+
     for output_devices in adjacency_list.values():
         all_devices.update(output_devices)
 
@@ -35,6 +36,7 @@ def get_min_depths(adjacency_list: dict[str, list[str]]) -> dict[str, int]:
 
 def get_max_depths(adjacency_list: dict[str, list[str]]) -> dict[str, int]:
     all_devices: set[str] = set(adjacency_list.keys())
+
     for output_devices in adjacency_list.values():
         all_devices.update(output_devices)
 
@@ -70,15 +72,15 @@ def get_max_depths(adjacency_list: dict[str, list[str]]) -> dict[str, int]:
     }
 
 
-def parse():
+def parse() -> tuple[dict[str, list[str]], dict[str, int], dict[str, int]]:
     adjacency_list: dict[str, list[str]] = {}
 
-    file = open("./11/input.txt", "r")
-    for line in file.readlines():
-        parts = line.strip().split(" ")
-        device = parts[0][:-1]
-        output_devices = parts[1:]
-        adjacency_list[device] = output_devices
+    with open("./11/input.txt", "r") as file:
+        for line in file:
+            parts = line.strip().split(" ")
+            device = parts[0][:-1]
+            output_devices = parts[1:]
+            adjacency_list[device] = output_devices
 
     min_depths = get_min_depths(adjacency_list)
     max_depths = get_max_depths(adjacency_list)
@@ -97,17 +99,15 @@ def find_paths_recursive(
 
     total_paths = 0
     current_device = path[-1]
+
     for output_device in adjacency_list[current_device]:
         if output_device in path:
             continue
-
         if output_device == end_device:
             total_paths += 1
             continue
-
         if output_device in ["out", "dac", "fft"]:
             continue
-
         total_paths += find_paths_recursive(
             adjacency_list,
             path + [output_device],

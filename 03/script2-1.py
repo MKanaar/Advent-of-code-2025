@@ -1,15 +1,17 @@
-def parse():
-    output: list[str] = []
-    file = open("./03/input.txt", "r")
-    for line in file.readlines():
-        output.append(line.strip())
+def parse() -> list[str]:
+    banks: list[str] = []
 
-    return output
+    with open("./03/input.txt", "r") as file:
+        for line in file:
+            banks.append(line.strip())
+
+    return banks
 
 
 def find_max_joltage(base: str, new_digit: str) -> str:
     max_joltage = -1
     batteries: str = base + new_digit
+
     for i in range(len(batteries)):
         copy = batteries[0:i] + batteries[i + 1 : len(batteries)]
         batteries_value = int(copy)
@@ -21,13 +23,12 @@ def find_max_joltage(base: str, new_digit: str) -> str:
 
 def process(bank: str) -> int:
     base = bank[0:12]
+
     for i in range(len(bank) - 12):
         new_digit = bank[i + 12]
         base = find_max_joltage(base, new_digit)
 
-    max_joltage = int(base)
-    # print(max_joltage)
-    return max_joltage
+    return int(base)
 
 
 total = 0

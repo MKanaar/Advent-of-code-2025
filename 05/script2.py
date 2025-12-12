@@ -1,21 +1,18 @@
-def parse() -> tuple[list[tuple[int, int]], list[int]]:
-    file = open("./05/input.txt", "r")
-    ranges: list[tuple[int, int]] = []
-    ids: list[int] = []
-    for line in file.readlines():
-        if line.strip() == "":
-            continue
-        if "-" in line:
-            range = line.strip().split("-")
-            ranges.append((int(range[0]), int(range[1])))
-        else:
-            ids.append(int(line.strip()))
+def parse() -> list[tuple[int, int]]:
+    with open("./05/input.txt", "r") as file:
+        ranges: list[tuple[int, int]] = []
+        for line in file:
+            if line.strip() == "":
+                continue
+            if "-" in line:
+                range = line.strip().split("-")
+                ranges.append((int(range[0]), int(range[1])))
 
-    return (ranges, ids)
+    return ranges
 
 
 def combine_ranges(range1: tuple[int, int], range2: tuple[int, int]) -> tuple[int, int]:
-    return (min(range1[0], range2[0]), max(range1[1], range2[1]))
+    return min(range1[0], range2[0]), max(range1[1], range2[1])
 
 
 def contains_overlap(range1: tuple[int, int], range2: tuple[int, int]) -> bool:
@@ -24,13 +21,15 @@ def contains_overlap(range1: tuple[int, int], range2: tuple[int, int]) -> bool:
 
 def get_unique_ranges(ranges: list[tuple[int, int]]) -> list[tuple[int, int]]:
     unique_ranges: list[tuple[int, int]] = []
+
     for range in ranges:
         if range not in unique_ranges and range != (0, 0):
             unique_ranges.append(range)
+
     return unique_ranges
 
 
-def process(ranges: list[tuple[int, int]], ids: list[int]) -> int:
+def process(ranges: list[tuple[int, int]]) -> int:
     for i in range(len(ranges) - 1):
         for j in range(i + 1, len(ranges)):
             if contains_overlap(ranges[i], ranges[j]):
@@ -47,7 +46,6 @@ def process(ranges: list[tuple[int, int]], ids: list[int]) -> int:
     return count
 
 
-count = 0
-ranges, ids = parse()
-count = process(ranges, ids)
+ranges = parse()
+count = process(ranges)
 print(count)

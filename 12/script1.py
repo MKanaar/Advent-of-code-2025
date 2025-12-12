@@ -18,21 +18,21 @@ class Puzzle:
         self.number_of_pieces = piece_indexes
 
 
-def parse():
-    file = open("./12/input.txt", "r")
-    pieces = list[PuzzlePiece]()
-    for _ in range(6):
-        file.readline()
-        shape = [[c == "#" for c in file.readline().strip()] for _ in range(3)]
-        pieces.append(PuzzlePiece(shape))
-        file.readline()
+def parse() -> tuple[list[PuzzlePiece], list[Puzzle]]:
+    with open("./12/input.txt", "r") as file:
+        pieces: list[PuzzlePiece] = []
+        for _ in range(6):
+            file.readline()
+            shape = [[c == "#" for c in file.readline().strip()] for _ in range(3)]
+            pieces.append(PuzzlePiece(shape))
+            file.readline()
 
-    puzzles = list[Puzzle]()
-    for line in file:
-        parts = line.strip().split(": ")
-        width, height = map(int, parts[0].split("x"))
-        piece_indexes = [int(x) for x in parts[1].split()]
-        puzzles.append(Puzzle(width, height, piece_indexes))
+        puzzles: list[Puzzle] = []
+        for line in file:
+            parts = line.strip().split(": ")
+            width, height = map(int, parts[0].split("x"))
+            piece_indexes = [int(x) for x in parts[1].split()]
+            puzzles.append(Puzzle(width, height, piece_indexes))
 
     return pieces, puzzles
 
@@ -50,7 +50,6 @@ def process(pieces: list[PuzzlePiece], puzzles: list[Puzzle]) -> int:
         possible_spaces = puzzle.width * puzzle.height
         if possible_spaces < total_used_spaces:
             continue
-
         solvable_puzzles += 1
 
     return solvable_puzzles

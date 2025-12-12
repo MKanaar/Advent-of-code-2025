@@ -1,32 +1,31 @@
-def parse():
-    output: list[list[int]] = []
-    file = open("./04/input.txt", "r")
-    for line in file.readlines():
-        output.append(list(line.strip()))
+def parse() -> list[str]:
+    grid: list[str] = []
 
-    return output
+    with open("./04/input.txt", "r") as file:
+        for line in file:
+            grid.append(line.strip())
+
+    return grid
 
 
-def get_adjacent_papers(grid: list[list[int]], row: int, col: int) -> int:
+def get_adjacent_papers(grid: list[str], row: int, col: int) -> int:
     adjacent = 0
+    width = len(grid[row])
+    height = len(grid)
 
     if row > 0 and col > 0 and grid[row - 1][col - 1] == "@":
         adjacent += 1  # Top-left
     if row > 0 and grid[row - 1][col] == "@":
         adjacent += 1  # Top
-    if row > 0 and col < len(grid[row]) - 1 and grid[row - 1][col + 1] == "@":
+    if row > 0 and col < width - 1 and grid[row - 1][col + 1] == "@":
         adjacent += 1  # Top-right
-    if col < len(grid[row]) - 1 and grid[row][col + 1] == "@":
+    if col < width - 1 and grid[row][col + 1] == "@":
         adjacent += 1  # Right
-    if (
-        row < len(grid) - 1
-        and col < len(grid[row]) - 1
-        and grid[row + 1][col + 1] == "@"
-    ):
+    if row < height - 1 and col < width - 1 and grid[row + 1][col + 1] == "@":
         adjacent += 1  # Bottom-right
-    if row < len(grid) - 1 and grid[row + 1][col] == "@":
+    if row < height - 1 and grid[row + 1][col] == "@":
         adjacent += 1  # Bottom
-    if row < len(grid) - 1 and col > 0 and grid[row + 1][col - 1] == "@":
+    if row < height - 1 and col > 0 and grid[row + 1][col - 1] == "@":
         adjacent += 1  # Bottom-left
     if col > 0 and grid[row][col - 1] == "@":
         adjacent += 1  # Left
@@ -34,7 +33,7 @@ def get_adjacent_papers(grid: list[list[int]], row: int, col: int) -> int:
     return adjacent
 
 
-def process(grid: list[list[int]]) -> int:
+def process(grid: list[str]) -> int:
     count = 0
 
     for row in range(len(grid)):
@@ -42,7 +41,6 @@ def process(grid: list[list[int]]) -> int:
             current = grid[row][col]
             if current == ".":
                 continue
-
             adjacent = get_adjacent_papers(grid, row, col)
             if adjacent < 4:
                 count += 1
@@ -50,7 +48,6 @@ def process(grid: list[list[int]]) -> int:
     return count
 
 
-accessible = 0
 grid = parse()
 accessible = process(grid)
 print(accessible)

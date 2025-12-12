@@ -1,19 +1,21 @@
-def parse():
-    output: list[tuple[str, list[str]]] = []
-    file = open("./11/input.txt", "r")
-    for line in file.readlines():
-        parts = line.strip().split(" ")
-        device = parts[0][:-1]
-        output_devices = parts[1:]
-        output.append((device, output_devices))
+def parse() -> list[tuple[str, list[str]]]:
+    server_rack: list[tuple[str, list[str]]] = []
 
-    return output
+    with open("./11/input.txt", "r") as file:
+        for line in file:
+            parts = line.strip().split(" ")
+            device = parts[0][:-1]
+            output_devices = parts[1:]
+            server_rack.append((device, output_devices))
+
+    return server_rack
 
 
 def find_paths_recursive(
     server_rack: list[tuple[str, list[str]]], path: list[str], total_paths: int
 ) -> int:
     current_device = -1
+
     for i, (device, _) in enumerate(server_rack):
         if device == path[-1]:
             current_device = i
